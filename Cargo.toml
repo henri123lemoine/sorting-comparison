@@ -8,10 +8,6 @@ name = "sorting_comparison"
 path = "src/lib.rs"
 crate-type = ["cdylib"]
 
-[[bin]]
-name = "bogo_sort"
-path = "src/main.rs"
-
 [dependencies]
 pyo3 = { version = "0.22.4", features = ["extension-module"] }
 rand = "0.8.5"
