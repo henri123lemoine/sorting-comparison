@@ -1,13 +1,21 @@
 #!/bin/bash
 
-echo "Compiling Rust script..."
-rustc bogo_sort.rs
-
-echo "Running benchmarks..."
 echo "n,Python Merge Sort (s),Rust Bogo Sort (s)"
 
-for i in {1..10}; do
-    python_time=$(TIMEFORMAT='%3R'; { time uv run src/merge_sort.py $i > /dev/null; } 2>&1)
-    rust_time=$(TIMEFORMAT='%3R'; { time ./bogo_sort $i > /dev/null; } 2>&1)
-    echo "$i,$python_time,$rust_time"
+for n in {1..10}; do
+    # Generate random numbers
+    numbers=$(python -c "import random; print(' '.join(str(random.randint(0, 1000)) for _ in range($n)))")
+    
+    # Run Python merge sort
+    python_time=$(TIMEFORMAT='%R'; { time echo "$numbers" | python src/merge_sort.py $n > /dev/null; } 2>&1)
+    
+    # Run Rust bogo sort
+    rust_time=$(TIMEFORMAT='%R'; { time echo "$numbers" | ./target/release/bogo_sort > /dev/null; } 2>&1)
+    
+    echo "$n,$python_time,$rust_time"
+    
+    # Break if Rust bogo sort takes more than 5 seconds
+    if (( $(echo "$rust_time > 5" | bc -l) )); then
+        break
+    fi
 done
