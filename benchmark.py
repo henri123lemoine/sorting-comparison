@@ -1,14 +1,15 @@
 import time
-import numpy as np
 import matplotlib.pyplot as plt
-from python.merge_sort import merge_sort, generate_random_array
-from rust.bogo_sort import rust_bogo_sort
+from sorting_comparison import bogo_sort
+from src.merge_sort import merge_sort, generate_random_array
+
 
 def time_sort(sort_func, arr):
     start_time = time.time()
     sort_func(arr)
     end_time = time.time()
     return end_time - start_time
+
 
 def find_crossover_point(max_size=20, step=1, runs=5):
     sizes = range(1, max_size + 1, step)
@@ -21,7 +22,7 @@ def find_crossover_point(max_size=20, step=1, runs=5):
         for _ in range(runs):
             arr = generate_random_array(size)
             merge_time += time_sort(merge_sort, arr.copy())
-            bogo_time += time_sort(rust_bogo_sort, arr)
+            bogo_time += time_sort(bogo_sort, arr)
         
         merge_times.append(merge_time / runs)
         bogo_times.append(bogo_time / runs)
@@ -31,6 +32,7 @@ def find_crossover_point(max_size=20, step=1, runs=5):
             break
 
     plot_results(sizes, merge_times, bogo_times)
+
 
 def plot_results(sizes, merge_times, bogo_times):
     plt.figure(figsize=(10, 6))
@@ -44,6 +46,7 @@ def plot_results(sizes, merge_times, bogo_times):
     plt.grid(True)
     plt.savefig('sorting_comparison.png')
     plt.show()
+
 
 if __name__ == "__main__":
     find_crossover_point()

@@ -17,7 +17,7 @@ fn bogo_sort(mut arr: Vec<i32>) -> Vec<i32> {
 }
 
 #[pymodule]
-fn rust_bogo_sort(_py: Python, m: &PyModule) -> PyResult<()> {
+fn sorting_comparison(_py: Python, m: &PyModule) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(bogo_sort, m)?)?;
     Ok(())
 }
