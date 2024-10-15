@@ -6,7 +6,3 @@ __pycache__/
 
 # Rust
 target/
-Cargo.lock
-
-# Project-specific
-sorting_comparison.png
