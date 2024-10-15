@@ -36,4 +36,4 @@ This script will test various array lengths and report the point at which Python
 
 ## Results
 
-TODO
+![Sorting Comparison](assets/sorting_comparison.png)
