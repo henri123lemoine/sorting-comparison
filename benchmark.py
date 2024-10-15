@@ -1,7 +1,9 @@
 import time
+
 import matplotlib.pyplot as plt
+
+from sorting_comparison import bogo_sort
 from src.merge_sort import merge_sort, generate_random_array
-from src import bogo_sort
 
 
 def time_sort(sort_func, arr):

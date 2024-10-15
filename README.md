@@ -12,7 +12,6 @@ This project compares the performance of merge sort implemented in Python agains
 
 2. Build the Rust library:
    ```bash
-   cd src/rust_bogo_sort
    cargo build --release
    cd ../..
    ```
@@ -29,8 +28,8 @@ This script will test various array lengths and report the point at which Python
 
 ## Project Structure
 
-- `src/python_merge_sort.py`: Implementation of merge sort in Python
-- `src/rust_bogo_sort/`: Rust project containing the bogo sort implementation
+- `src/merge_sort.py`: Implementation of merge sort in Python
+- `src/lib.rs`: Rust file containing the bogo sort implementation
 - `benchmark.py`: Python script to run the benchmark and compare the algorithms
 - `pyproject.toml`: Python project configuration
 - `Cargo.toml`: Rust project configuration
