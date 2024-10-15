@@ -12,25 +12,6 @@ pub fn bogo_sort(arr: &mut [i32]) {
     }
 }
 
-#[cfg(feature = "python")]
-use pyo3::prelude::*;
-
-#[cfg(feature = "python")]
-#[pyfunction]
-fn rust_bogo_sort(py: Python, arr: Vec<i32>) -> PyResult<Vec<i32>> {
-    let mut arr = arr;
-    py.allow_threads(|| bogo_sort(&mut arr));
-    Ok(arr)
-}
-
-#[cfg(feature = "python")]
-#[pymodule]
-fn sorting_comparison(_py: Python, m: &PyModule) -> PyResult<()> {
-    m.add_function(wrap_pyfunction!(rust_bogo_sort, m)?)?;
-    Ok(())
-}
-
-#[cfg(not(feature = "python"))]
 fn main() {
     let stdin = io::stdin();
     let mut line = String::new();
