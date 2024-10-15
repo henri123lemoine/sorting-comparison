@@ -1,10 +1,8 @@
-[build-system]
-requires = ["maturin>=1.7,<2.0"]
-build-backend = "maturin"
-
 [project]
 name = "sorting-comparison"
-requires-python = ">=3.8"
+description = "Comparison of Python merge sort and Rust bogo sort"
+readme = "README.md"
+requires-python = ">=3.12"
 classifiers = [
     "Programming Language :: Rust",
     "Programming Language :: Python :: Implementation :: CPython",
@@ -14,5 +12,10 @@ dynamic = ["version"]
 dependencies = [
     "matplotlib>=3.7.5",
 ]
+
+[build-system]
+requires = ["maturin>=1.7,<2.0"]
+build-backend = "maturin"
+
 [tool.maturin]
 features = ["pyo3/extension-module"]
