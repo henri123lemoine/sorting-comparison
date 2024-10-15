@@ -1,2 +1,12 @@
-/target
+# Python
+__pycache__/
+*.py[cod]
+*.so
 .python-version
+
+# Rust
+target/
+Cargo.lock
+
+# Project-specific
+sorting_comparison.png
