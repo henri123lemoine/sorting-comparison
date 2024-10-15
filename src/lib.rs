@@ -1,23 +1,14 @@
 use pyo3::prelude::*;
-use rand::seq::SliceRandom;
-use rand::thread_rng;
 
+/// Formats the sum of two numbers as string.
 #[pyfunction]
-fn is_sorted(arr: &[i32]) -> bool {
-    arr.windows(2).all(|w| w[0] <= w[1])
+fn sum_as_string(a: usize, b: usize) -> PyResult<String> {
+    Ok((a + b).to_string())
 }
 
-#[pyfunction]
-fn bogo_sort(mut arr: Vec<i32>) -> Vec<i32> {
-    let mut rng = thread_rng();
-    while !is_sorted(&arr) {
-        arr.shuffle(&mut rng);
-    }
-    arr
-}
-
+/// A Python module implemented in Rust.
 #[pymodule]
-fn sorting_comparison(_py: Python, m: &PyModule) -> PyResult<()> {
-    m.add_function(wrap_pyfunction!(bogo_sort, m)?)?;
+fn sorting_comparison(m: &Bound<'_, PyModule>) -> PyResult<()> {
+    m.add_function(wrap_pyfunction!(sum_as_string, m)?)?;
     Ok(())
 }
