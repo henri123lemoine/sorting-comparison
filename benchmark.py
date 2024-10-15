@@ -1,5 +1,5 @@
-import signal
 import time
+from typing import List, Tuple, Callable
 
 import matplotlib.pyplot as plt
 
@@ -7,91 +7,60 @@ from src.merge_sort import merge_sort, generate_random_array
 from sorting_comparison import bogo_sort
 
 
-class TimeoutException(Exception):
-    pass
-
-
-def timeout_handler(signum, frame):
-    raise TimeoutException()
-
-
-def time_sort_with_timeout(sort_func, arr, timeout=5):
-    signal.signal(signal.SIGALRM, timeout_handler)
-    signal.alarm(timeout)
+def time_sort(sort_func: Callable, arr: List[int], max_time: float = 0.1) -> Tuple[float, bool]:
+    """Time a sorting function with a maximum time limit."""
+    start_time = time.perf_counter()
     try:
-        start_time = time.time()
-        sort_func(arr)
-        end_time = time.time()
-        signal.alarm(0)  # Reset the alarm
-        return end_time - start_time
-    except TimeoutException:
-        return float("inf")
+        sorted_arr = sort_func(arr.copy())
+        duration = time.perf_counter() - start_time
+        if duration > max_time or sorted_arr != sorted(arr):
+            return duration, False
+        return duration, True
+    except Exception:
+        return max_time, False
 
 
-def find_crossover_point(max_size=20, step=1, runs=5, bogo_max_size=10):
+def quick_benchmark(sort_func: Callable, size: int, runs: int = 3, max_time: float = 0.1) -> float:
+    """Run a quick benchmark for a sorting function."""
+    total_time = 0
+    for _ in range(runs):
+        duration, success = time_sort(sort_func, generate_random_array(size), max_time)
+        if not success:
+            return max_time
+        total_time += duration
+    return total_time / runs
+
+
+def benchmark_sorting(max_size: int = 20, step: int = 1) -> Tuple[List[int], List[float], List[float]]:
+    """Benchmark merge sort and bogo sort."""
     sizes = list(range(1, max_size + 1, step))
-    merge_times = []
-    bogo_times = []
-    crossover_found = False
+    merge_times, bogo_times = [], []
 
+    print("Benchmarking...")
     for size in sizes:
-        print(f"\nTesting array size: {size}")
-        merge_time = 0
-        bogo_time = 0
-        for run in range(runs):
-            arr = generate_random_array(size)
-            arr_copy = arr.copy()
+        merge_time = quick_benchmark(merge_sort, size)
+        bogo_time = quick_benchmark(bogo_sort, size)
+        
+        merge_times.append(merge_time)
+        bogo_times.append(bogo_time)
+        
+        print(f"Size {size}: Merge Sort: {merge_time:.6f}s, Bogo Sort: {bogo_time:.6f}s")
+        
+        if bogo_time >= 0.1:
+            print("Bogo Sort reached time limit. Stopping Bogo Sort benchmarking.")
+            break
 
-            # Time and verify Merge Sort
-            merge_start = time.time()
-            merge_sorted = merge_sort(arr)
-            merge_end = time.time()
-            merge_run_time = merge_end - merge_start
-            merge_time += merge_run_time
-            print(f"  Merge Sort Run {run+1}: {merge_run_time:.6f} seconds")
-            assert merge_sorted == sorted(arr), "Merge Sort failed to sort correctly"
-
-            # Time and verify Bogo Sort (only for small sizes)
-            if size <= bogo_max_size:
-                bogo_start = time.time()
-                bogo_sorted = bogo_sort(arr_copy)
-                bogo_end = time.time()
-                bogo_run_time = bogo_end - bogo_start
-                bogo_time += bogo_run_time
-                print(f"  Bogo Sort Run {run+1}: {bogo_run_time:.6f} seconds")
-                assert bogo_sorted == sorted(
-                    arr_copy
-                ), "Bogo Sort failed to sort correctly"
-
-        merge_times.append(merge_time / runs)
-        if size <= bogo_max_size:
-            bogo_times.append(bogo_time / runs)
-            if not crossover_found and merge_times[-1] < bogo_times[-1]:
-                print(f"Crossover point found at array size: {size}")
-                crossover_found = True
-
-        print(f"Average Merge Sort time: {merge_times[-1]:.6f} seconds")
-        if size <= bogo_max_size:
-            print(f"Average Bogo Sort time: {bogo_times[-1]:.6f} seconds")
-
-    # Pad bogo_times with infinity for the sizes we didn't test
-    bogo_times.extend([float("inf")] * (len(sizes) - len(bogo_times)))
-
-    plot_results(sizes, merge_times, bogo_times)
+    return sizes[:len(bogo_times)], merge_times[:len(bogo_times)], bogo_times
 
 
-def plot_results(sizes, merge_times, bogo_times):
+def plot_results(sizes: List[int], merge_times: List[float], bogo_times: List[float]):
+    """Plot the benchmark results."""
     plt.figure(figsize=(12, 8))
     plt.loglog(sizes, merge_times, label="Python Merge Sort", marker="o")
-    plt.loglog(
-        sizes[: len([t for t in bogo_times if t != float("inf")])],
-        [t for t in bogo_times if t != float("inf")],
-        label="Rust Bogo Sort",
-        marker="s",
-    )
+    plt.loglog(sizes, bogo_times, label="Rust Bogo Sort", marker="s")
     plt.xlabel("Array Size")
     plt.ylabel("Time (seconds)")
-    plt.title("Python Merge Sort vs Rust Bogo Sort")
+    plt.title("Python Merge Sort vs Rust Bogo Sort (Quick Benchmark)")
     plt.legend()
     plt.grid(True)
     plt.savefig("assets/sorting_comparison.png")
@@ -99,4 +68,5 @@ def plot_results(sizes, merge_times, bogo_times):
 
 
 if __name__ == "__main__":
-    find_crossover_point()
+    sizes, merge_times, bogo_times = benchmark_sorting()
+    plot_results(sizes, merge_times, bogo_times)
