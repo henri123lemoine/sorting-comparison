@@ -3,20 +3,7 @@ name = "sorting-comparison"
 description = "Comparison of Python merge sort and Rust bogo sort"
 readme = "README.md"
 requires-python = ">=3.12"
-classifiers = [
-    "Programming Language :: Rust",
-    "Programming Language :: Python :: Implementation :: CPython",
-    "Programming Language :: Python :: Implementation :: PyPy",
-]
 dynamic = ["version"]
 dependencies = [
     "matplotlib>=3.7.5",
-    "maturin>=1.7.4",
 ]
-
-[build-system]
-requires = ["maturin>=1.7,<2.0"]
-build-backend = "maturin"
-
-[tool.maturin]
-features = ["pyo3/extension-module"]
