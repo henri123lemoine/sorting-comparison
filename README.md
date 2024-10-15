@@ -21,7 +21,7 @@ This project compares the performance of merge sort implemented in Python agains
 To run the benchmark and find the crossover point:
 
 ```bash
-uv run benchmark.py
+./benchmark.sh
 ```
 
 This script will test various array lengths and report the point at which Python's merge sort becomes faster than Rust's bogo sort.
@@ -30,7 +30,7 @@ This script will test various array lengths and report the point at which Python
 
 - `src/merge_sort.py`: Implementation of merge sort in Python
 - `src/lib.rs`: Rust file containing the bogo sort implementation
-- `benchmark.py`: Python script to run the benchmark and compare the algorithms
+- `benchmark.sh`: Bash script to run the benchmark and compare the algorithms
 - `pyproject.toml`: Python project configuration
 - `Cargo.toml`: Rust project configuration
 
