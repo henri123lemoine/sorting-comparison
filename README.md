@@ -10,12 +10,6 @@ This project compares the performance of merge sort implemented in Python agains
    cd sorting-comparison
    ```
 
-2. Build the Rust library:
-   ```bash
-   cargo build --release
-   cd ../..
-   ```
-
 ## Running the Benchmark
 
 To run the benchmark and find the crossover point:
@@ -25,6 +19,14 @@ To run the benchmark and find the crossover point:
 ```
 
 This script will test various array lengths and report the point at which Python's merge sort becomes faster than Rust's bogo sort.
+
+## Plotting the Results
+
+To plot the benchmark results:
+
+```bash
+uv run plot.py
+```
 
 ## Project Structure
 
