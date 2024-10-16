@@ -33,7 +33,7 @@ run_benchmark() {
             
             # Run Python merge sort
             if [ "$include_start_time" = true ]; then
-                python_time=$(TIMEFORMAT='%R'; { time uv run python src/merge_sort.py $n <<< "$numbers" > /dev/null; } 2>&1)
+                python_time=$(TIMEFORMAT='%R'; { time uv run src/merge_sort.py $n <<< "$numbers" > /dev/null; } 2>&1)
             else
                 python_time=$(uv run python -c "
 import time
