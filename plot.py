@@ -52,10 +52,10 @@ def plot_results(filename, title):
 
 # Plot results for all scenarios
 scenarios = [
-    ('benchmark_no_compile_no_start.csv', 'Python Merge Sort vs Rust Bogo Sort\n(No Compile Time, No Start Time)'),
-    ('benchmark_no_compile_with_start.csv', 'Python Merge Sort vs Rust Bogo Sort\n(No Compile Time, With Start Time)'),
-    ('benchmark_with_compile_no_start.csv', 'Python Merge Sort vs Rust Bogo Sort\n(With Compile Time, No Start Time)'),
-    ('benchmark_with_compile_with_start.csv', 'Python Merge Sort vs Rust Bogo Sort\n(With Compile Time, With Start Time)')
+    ('assets/benchmark_no_compile_no_start.csv', 'Python Merge Sort vs Rust Bogo Sort\n(No Compile Time, No Start Time)'),
+    ('assets/benchmark_no_compile_with_start.csv', 'Python Merge Sort vs Rust Bogo Sort\n(No Compile Time, With Start Time)'),
+    ('assets/benchmark_with_compile_no_start.csv', 'Python Merge Sort vs Rust Bogo Sort\n(With Compile Time, No Start Time)'),
+    ('assets/benchmark_with_compile_with_start.csv', 'Python Merge Sort vs Rust Bogo Sort\n(With Compile Time, With Start Time)')
 ]
 
 for filename, title in scenarios:
