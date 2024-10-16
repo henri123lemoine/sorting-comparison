@@ -3,10 +3,5 @@ name = "sorting-comparison"
 version = "0.1.0"
 edition = "2021"
 
-[lib]
-name = "sorting_comparison"
-path = "src/lib.rs"
-crate-type = ["cdylib"]
-
 [dependencies]
 rand = "0.8.5"
