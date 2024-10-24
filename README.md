@@ -62,3 +62,9 @@ Start times and compile times:
 ![Sorting Comparison](assets/benchmark_with_compile_with_start_plot.png)
 
 Crossover point: 1
+
+## TODO
+
+- Compare with [Slowsort](https://arpitbhayani.me/blogs/slowsort/).
+- Clean up structure to make additional comparisons simple.
+
